@@ -4,7 +4,7 @@ author: 'Tu Nombre'
 
 # PARTE 1: Inputs (Parámetros de entrada)
 inputs:
-  branch_name: 'parche-rapido-paraprod'
+  branch_name:
     description: 'Nombre de la rama a evaluar'
     required: true
     default: 'feature/nueva-mejora'
