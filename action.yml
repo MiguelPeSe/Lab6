@@ -14,13 +14,18 @@ inputs:
     default: 'DEV'
 
 # PARTE 1: Outputs (Resultados de salida)
+# ==========================================
+# PARTE 1: Outputs (CORREGIDO CON EL SÍMBOLO ".")
+# ==========================================
 outputs:
   is_valid:
     description: 'Devuelve true si la rama sigue el estandar corporativo'
-    value: ${{ steps:procesador.outputs.is_valid }}
+    # CORRECCIÓN: Se cambia "steps:procesador" por "steps.procesador"
+    value: ${{ steps.procesador.outputs.is_valid }}
   generated_version:
     description: 'Version semantica dinamica autogenerada'
-    value: ${{ steps:procesador.outputs.generated_version }}
+    # CORRECCIÓN: Se cambia "steps:procesador" por "steps.procesador"
+    value: ${{ steps.procesador.outputs.generated_version }}
 
 # PARTE 1: Branding (Icono en el Marketplace)
 branding:
