@@ -21,14 +21,19 @@ jobs:
           environment_tier: 'PROD'
 
       # PARTE 3: Reutilizar los outputs generados en pasos posteriores
+# ========================================================
+      # PARTE 3: Consumir Resultados y Tomar Decisiones (CORREGIDO)
+      # ========================================================
       - name: Consumir Resultados y Tomar Decisiones
         run: |
           echo "=== LEYENDO OUTPUTS DEL PASO ANTERIOR ==="
-          echo "¿Es una rama valida?: ${{ steps:mi_custom_action.outputs.is_valid }}"
-          echo "Version calculada por la Action: ${{ steps:mi_custom_action.outputs.generated_version }}"
           
-          # Simulamos una condicion basada en el output dinamico
-          if [ "${{ steps:mi_custom_action.outputs.is_valid }}" = "true" ]; then
+          # CORRECCIÓN: Cambiados los ":" por "." después de "steps" y "outputs"
+          echo "¿Es una rama valida?: ${{ steps.mi_custom_action.outputs.is_valid }}"
+          echo "Version calculada por la Action: ${{ steps.mi_custom_action.outputs.generated_version }}"
+          
+          # También corregimos la condición de abajo
+          if [ "${{ steps.mi_custom_action.outputs.is_valid }}" = "true" ]; then
             echo "Pipeline autorizado para continuar con el empaquetado de la version."
           else
             echo "::error:: Pipeline bloqueado por incumplimiento de Naming."
