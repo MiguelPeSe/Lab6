@@ -1,0 +1,36 @@
+name: Laboratorio 6 - Consumidor de Custom Action
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  test-nuestra-action:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      # PARTE 3: Consumir la Custom Action Localmente de forma directa
+      - name: Invocar Custom Action Corporativa
+        id: mi_custom_action
+        uses: ./ # Apunta a la raiz del repositorio donde esta el action.yml
+        with:
+          branch_name: ${{ github.ref_name }} # Le pasamos de forma dinamica la rama actual
+          environment_tier: 'PROD'
+
+      # PARTE 3: Reutilizar los outputs generados en pasos posteriores
+      - name: Consumir Resultados y Tomar Decisiones
+        run: |
+          echo "=== LEYENDO OUTPUTS DEL PASO ANTERIOR ==="
+          echo "¿Es una rama valida?: ${{ steps:mi_custom_action.outputs.is_valid }}"
+          echo "Version calculada por la Action: ${{ steps:mi_custom_action.outputs.generated_version }}"
+          
+          # Simulamos una condicion basada en el output dinamico
+          if [ "${{ steps:mi_custom_action.outputs.is_valid }}" = "true" ]; then
+            echo "Pipeline autorizado para continuar con el empaquetado de la version."
+          else
+            echo "::error:: Pipeline bloqueado por incumplimiento de Naming."
+            exit 1
+          fi
